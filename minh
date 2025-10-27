@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Xin lỗi Hiền 💖</title>
+<style>
+body{margin:0;font-family:sans-serif;background:#FFF8F0;overflow-x:hidden;}
+.page{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:10px;}
+.page.active{display:flex;}
+.card{background:#fff8f0;padding:20px;border-radius:15px;box-shadow:0 5px 20px rgba(0,0,0,0.1);text-align:center;}
+.hero-img{width:100px;height:100px;border-radius:10px;object-fit:cover;margin:5px;}
+.btn{padding:10px 20px;margin:5px;border-radius:50px;border:none;cursor:pointer;font-weight:bold;}
+.yes{background:linear-gradient(90deg,#ffd6ea,#ff9ac4);color:#fff;}
+.no{background:#fff;border:2px solid #ff9ac4;color:#ff6fa3;}
+.audios{margin-top:10px;}
+.audio-btn{margin:0 5px;padding:5px 10px;border-radius:10px;border:1px solid #ffd6ea;background:#fff;cursor:pointer;}
+.slideshow-wrap{width:90%;max-width:600px;position:relative;margin-top:20px;overflow:hidden;border-radius:15px;}
+.slide{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;transition:all 1s ease;}
+.slide.active{opacity:1;}
+.slide img, .slide video{width:100%;height:100%;object-fit:cover;}
+.heart-layer{pointer-events:none;position:absolute;inset:0;z-index:6;overflow:hidden;}
+.heart{position:absolute;font-size:20px;color:#ff6fa3;opacity:0;transition:all 2s ease;}
+</style>
+</head>
+<body>
+
+<!-- Trang 1 -->
+<div id="page1" class="page active">
+  <div class="card">
+    <div id="page1-images"></div>
+    <h1>Gửi Vũ Thu Hiền của mìnggg 💌</h1>
+    <p>2 ngày bé ngủ mà thiếu lời chúc ngủ ngon của tớ, tớ làm web này để xin lỗi 💕</p>
+    <div>
+      <button id="btnYes" class="btn yes">Hết giận rồi 💖</button>
+      <button id="btnNo" class="btn no">Chưa hết giận 😤</button>
+    </div>
+    <div class="audios">
+      <button id="playA" class="audio-btn">▶️ Voice 1</button>
+      <button id="playB" class="audio-btn">▶️ Voice 2</button>
+    </div>
+  </div>
+</div>
+
+<!-- Trang 2 -->
+<div id="page2" class="page">
+  <div class="slideshow-wrap" id="slideshow"></div>
+  <button id="toAudio" class="btn yes" style="margin-top:20px;">Nghe anh nói nè 💞</button>
+  <div class="heart-layer" id="heartLayer"></div>
+</div>
+
+<!-- Trang 3 -->
+<div id="page3" class="page">
+  <h2>Chúc ngủ ngon nè 🌙</h2>
+  <audio id="sleepAudio" controls></audio>
+</div>
+
+<script>
+// -------- CONFIG --------
+const CONFIG = {
+  IMG_IDS: [
+    '1zbErSCljvChsEU2Qz7cJX5i4FutGugQe',
+    '1XMJKxVandS0pOnhe-XE14v3fdHnA_1XL',
+    '1v_ZEOrKx6_20e7B0n6VUs5LRnVfv2nCp'
+  ],
+  AUDIO1_ID: '1eYYwwxSYS_t_2J-VokbpnyKs_fEyvYGv',
+  AUDIO2_ID: '1w10YK29m__Ox9tshkIH8toVXHCFDnof8',
+  SLIDE_IDS: [
+    '1tdgOs5GcDOzcM9YUjvDoADx5BNuF-Xc8',
+    '1HSFq6aVNOVthJVX2SgeRKbfXPC2zwDiF',
+    '1bsY5rzT_u5TJjoMnO96VYTPkqVgshbuY',
+    '19cGT74Iwgp3j98UfvSbH1SKxTU8s6ZUR',
+    '1O73fkQtFPmP33v5Uz8th93u6IbWsYiAF',
+    '1O73fkQtFPmP33v5Uz8th93u6IbWsYiAF',
+    '1O73fkQtFPmP33v5Uz8th93u6IbWsYiAF',
+    '18Kx3gCHNeTQkKtcXYi9stRfR0XvAv8iw',
+    '1sHwApUha03aBJ6KFKr0EddPRvq8WNmFM'
+  ],
+  VIDEO_ID: '1zrz3uVmKnvMo3yIviSimKt8slP1jelB7',
+  SLEEP_ID: '1ZAPJ0tOw26Mtg_UXLm5tFRKEL2KkH-Su'
+};
+
+function toDriveDirect(id){return `https://drive.google.com/uc?export=view&id=${id}`}
+
+// -------- Trang 1 images --------
+const page1Images = document.getElementById('page1-images');
+CONFIG.IMG_IDS.forEach(id=>{
+  const img=document.createElement('img');
+  img.src = toDriveDirect(id);
+  img.className='hero-img';
+  page1Images.appendChild(img);
+});
+
+// -------- Nút bấm --------
+document.getElementById('btnNo').onclick = ()=>{
+  const btnYes=document.getElementById('btnYes');
+  btnYes.style.transform='scale(1.2)';
+  setTimeout(()=>{btnYes.style.transform='scale(1)';},600);
+}
+document.getElementById('btnYes').onclick = ()=>{
+  document.getElementById('page1').classList.remove('active');
+  document.getElementById('page2').classList.add('active');
+  startSlideshow();
+  createHeartsBurst(10);
+}
+
+// -------- Audio trang 1 --------
+document.getElementById('playA').onclick=()=>new Audio(toDriveDirect(CONFIG.AUDIO1_ID)).play();
+document.getElementById('playB').onclick=()=>new Audio(toDriveDirect(CONFIG.AUDIO2_ID)).play();
+
+// -------- Audio trang 3 --------
+document.getElementById('sleepAudio').src=toDriveDirect(CONFIG.SLEEP_ID);
+
+// -------- Slideshow trang 2 --------
+let slideIndex=0, slideTimer;
+function startSlideshow(){
+  const wrapper=document.getElementById('slideshow');
+  wrapper.innerHTML='';
+  CONFIG.SLIDE_IDS.forEach(id=>{
+    const div=document.createElement('div'); div.className='slide';
+    const img=document.createElement('img'); img.src=toDriveDirect(id);
+    div.appendChild(img); wrapper.appendChild(div);
+  });
+  const videoDiv=document.createElement('div'); videoDiv.className='slide';
+  const vid=document.createElement('video'); vid.src=toDriveDirect(CONFIG.VIDEO_ID); vid.controls=true;
+  vid.style.width='100%'; vid.style.height='100%'; vid.style.objectFit='cover';
+  videoDiv.appendChild(vid); wrapper.appendChild(videoDiv);
+
+  const slides=wrapper.querySelectorAll('.slide');
+  slides[0].classList.add('active');
+  slideIndex=0;
+  if(slideTimer) clearInterval(slideTimer);
+  slideTimer=setInterval(()=>{
+    slides[slideIndex].classList.remove('active');
+    slideIndex=(slideIndex+1)%slides.length;
+    slides[slideIndex].classList.add('active');
+    const v=slides[slideIndex].querySelector('video'); if(v){v.play();}
+    createHeartsBurst(6);
+  },3500);
+}
+
+// -------- Nút sang trang 3 --------
+document.getElementById('toAudio').onclick=()=>{
+  document.getElementById('page2').classList.remove('active');
+  document.getElementById('page3').classList.add('active');
+}
+
+// -------- Trái tim rơi --------
+function createHeart(x,y,size,color,delay){
+  const layer=document.getElementById('heartLayer');
+  const h=document.createElement('div'); h.className='heart';
+  h.innerText='❤';
+  h.style.left=x+'px'; h.style.top=y+'px'; h.style.fontSize=size+'px'; h.style.color=color;
+  layer.appendChild(h);
+  requestAnimationFrame(()=>{
+    h.style.opacity=1; h.style.transform='translateY(120px) scale(1.05)';
+  });
+  setTimeout(()=>{h.remove();},2200);
+}
+function createHeartsBurst(n){
+  const layer=document.getElementById('heartLayer');
+  const w=layer.clientWidth||300;
+  const colors=['#ff6fa3','#ff9ac4','#ffffff','#ffd6ea','#f8cfe6','#ffc9e3'];
+  for(let i=0;i<n;i++){
+    const x=Math.random()*w; const y=10+Math.random()*40;
+    const sz=12+Math.random()*28; const col=colors[Math.floor(Math.random()*colors.length)];
+    createHeart(x,y,sz,col,0);
+  }
+}
+</script>
+
+</body>
+</html>
